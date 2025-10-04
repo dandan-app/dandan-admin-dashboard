@@ -7,6 +7,13 @@ set -e  # توقف عند أي خطأ
 
 echo "🚀 بدء بناء Flutter Web على Netlify..."
 
+# عرض معلومات البيئة
+echo "🔍 معلومات البيئة:"
+echo "المسار الحالي: $(pwd)"
+echo "NETLIFY_BUILD_BASE: ${NETLIFY_BUILD_BASE:-غير محدد}"
+echo "HOME: $HOME"
+echo "PATH: $PATH"
+
 # التحقق من وجود Flutter
 if ! command -v flutter &> /dev/null; then
     echo "📦 Flutter غير مثبت، جاري التثبيت..."
@@ -36,13 +43,37 @@ else
 fi
 
 # العودة إلى مجلد المشروع
-cd "$NETLIFY_BUILD_BASE"
+if [ -n "$NETLIFY_BUILD_BASE" ]; then
+    cd "$NETLIFY_BUILD_BASE"
+    echo "📂 الانتقال إلى مجلد Netlify: $NETLIFY_BUILD_BASE"
+else
+    echo "📂 البقاء في المجلد الحالي: $(pwd)"
+fi
+
+# عرض محتويات المجلد للتشخيص
+echo "📋 محتويات المجلد الحالي:"
+ls -la
 
 # التحقق من وجود pubspec.yaml
 if [ ! -f "pubspec.yaml" ]; then
-    echo "❌ ملف pubspec.yaml غير موجود!"
-    echo "تأكد من أنك في مجلد المشروع الصحيح"
-    exit 1
+    echo "❌ ملف pubspec.yaml غير موجود في المجلد الحالي!"
+    echo "المسار الحالي: $(pwd)"
+    echo "🔍 البحث عن pubspec.yaml في المجلدات الفرعية..."
+    
+    # البحث عن pubspec.yaml في المجلدات الفرعية
+    PUBSPEC_PATH=$(find . -name "pubspec.yaml" -type f | head -1)
+    if [ -n "$PUBSPEC_PATH" ]; then
+        echo "✅ تم العثور على pubspec.yaml في: $PUBSPEC_PATH"
+        PROJECT_DIR=$(dirname "$PUBSPEC_PATH")
+        echo "📂 الانتقال إلى مجلد المشروع: $PROJECT_DIR"
+        cd "$PROJECT_DIR"
+    else
+        echo "❌ لم يتم العثور على pubspec.yaml في أي مكان!"
+        echo "الرجاء التأكد من أن المشروع يحتوي على ملف pubspec.yaml"
+        exit 1
+    fi
+else
+    echo "✅ تم العثور على pubspec.yaml في المجلد الحالي"
 fi
 
 echo "🧹 تنظيف المشروع..."
