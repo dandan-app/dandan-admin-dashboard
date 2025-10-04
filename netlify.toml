@@ -1,6 +1,6 @@
 [build]
   publish = "build/web"
-  command = "chmod +x netlify-build-simple.sh && ./netlify-build-simple.sh"
+  command = "chmod +x netlify-build-with-flutter.sh && ./netlify-build-with-flutter.sh"
 
 [build.environment]
   FLUTTER_VERSION = "3.24.0"
