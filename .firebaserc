@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "dndn-86c02"
+  },
+  "targets": {
+    "dandanapp-d2986": {
+      "hosting": {
+        "dandn-admin-dashboard": [
+          "admin.dandan.sa"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
