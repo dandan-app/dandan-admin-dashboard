@@ -1,9 +1,10 @@
 [build]
   publish = "build/web"
-  command = "flutter build web --release"
+  command = "chmod +x netlify-build.sh && ./netlify-build.sh"
 
 [build.environment]
   FLUTTER_VERSION = "3.24.0"
+  NETLIFY_BUILD_BASE = "/opt/build/repo"
 
 [[redirects]]
   from = "/*"
