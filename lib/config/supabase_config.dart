@@ -3,9 +3,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class SupabaseConfig {
   static SupabaseClient? _client;
   
-  // إعدادات Supabase - مشروع dandan-admin
-  static const String supabaseUrl = 'https://lhhlysnqflbsfdjdgavu.supabase.co';
-  static const String supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxoaGx5c25xZmxic2ZkamRnYXZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzNjM3MjcsImV4cCI6MjA3NDkzOTcyN30.KrX4tKeSxBQaVUrwE8_w0pExjwbyNF6XBZsl0b5-B0U';
+  // إعدادات Supabase - مشروع dndnapp (القاعدة الرسمية)
+  static const String supabaseUrl = 'https://jusynjgjjlvmrvbrnqik.supabase.co';
+  static const String supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1c3luamdqamx2bXJ2YnJucWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAyODYyMjIsImV4cCI6MjA3NTg2MjIyMn0.Bq5fzwIQJ1lfKOieACoPnCBDu1uXL8z6JGrcnB4U0DI';
   
   // تهيئة Supabase
   static Future<void> initialize() async {
