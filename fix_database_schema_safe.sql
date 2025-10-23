@@ -16,6 +16,8 @@ ORDER BY table_name;
 
 -- التحقق من الحقول الموجودة في جدول users (إذا كان موجوداً)
 DO $$ 
+DECLARE
+    rec RECORD;
 BEGIN
     IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'users' AND table_schema = 'public') THEN
         RAISE NOTICE '📋 حقول جدول users:';
