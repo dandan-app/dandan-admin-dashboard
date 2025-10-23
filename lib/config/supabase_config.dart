@@ -1,19 +1,29 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'environment_config.dart';
 
 class SupabaseConfig {
   static SupabaseClient? _client;
   
   // إعدادات Supabase - مشروع dndnapp (القاعدة الرسمية)
-  static const String supabaseUrl = 'https://jusynjgjjlvmrvbrnqik.supabase.co';
-  static const String supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1c3luamdqamx2bXJ2YnJucWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAyODYyMjIsImV4cCI6MjA3NTg2MjIyMn0.Bq5fzwIQJ1lfKOieACoPnCBDu1uXL8z6JGrcnB4U0DI';
+  static String get supabaseUrl => EnvironmentConfig.supabaseUrl;
+  static String get supabaseAnonKey => EnvironmentConfig.supabaseAnonKey;
   
   // تهيئة Supabase
   static Future<void> initialize() async {
+    // طباعة معلومات التصحيح
+    EnvironmentConfig.printDebugInfo();
+    
+    print('🔗 تهيئة Supabase مع:');
+    print('URL: ${supabaseUrl}');
+    print('Anon Key: ${supabaseAnonKey.substring(0, 20)}...');
+    
     await Supabase.initialize(
       url: supabaseUrl,
       anonKey: supabaseAnonKey,
     );
     _client = Supabase.instance.client;
+    
+    print('✅ تم تهيئة Supabase بنجاح');
   }
   
   // الحصول على مثيل Supabase
