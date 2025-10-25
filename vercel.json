@@ -4,10 +4,56 @@
   "outputDirectory": "build/web",
   "installCommand": "echo 'Installing Flutter...'",
   "builds": [
-    { "src": "build/web/**", "use": "@vercel/static" }
+    {
+      "src": "build/web/**",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/index.html" }
+    {
+      "src": "/assets/(.*)",
+      "dest": "/build/web/assets/$1"
+    },
+    {
+      "src": "/canvaskit/(.*)",
+      "dest": "/build/web/canvaskit/$1"
+    },
+    {
+      "src": "/icons/(.*)",
+      "dest": "/build/web/icons/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|wasm|png|jpg|jpeg|gif|svg|ico|json|txt|xml|html))$",
+      "dest": "/build/web/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/build/web/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(js|css|wasm)$",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
   ],
   "env": {
     "FLUTTER_VERSION": "3.24.0",

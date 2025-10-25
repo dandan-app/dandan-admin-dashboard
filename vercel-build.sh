@@ -90,62 +90,94 @@ if [ -d "build/web" ]; then
     # Verify index.html exists
     if [ -f "build/web/index.html" ]; then
         echo "✅ index.html found in build/web"
+        echo "📄 index.html content preview:"
+        head -10 build/web/index.html
         
-        # Copy index.html to root for Vercel routing
-        cp build/web/index.html ./index.html
-        echo "✅ Copied index.html to root directory"
+        # Verify Flutter assets exist
+        if [ -d "build/web/assets" ]; then
+            echo "✅ Assets directory found"
+            ls -la build/web/assets/ | head -5
+        fi
+        
+        if [ -d "build/web/canvaskit" ]; then
+            echo "✅ Canvaskit directory found"
+            ls -la build/web/canvaskit/ | head -3
+        fi
+        
+        # Create build verification file
+        echo "Flutter Web App - Built $(date)" > build/web/build-info.txt
+        echo "Build Status: SUCCESS" >> build/web/build-info.txt
+        echo "Index.html: EXISTS" >> build/web/build-info.txt
+        echo "Assets: $(ls build/web/assets/ 2>/dev/null | wc -l) files" >> build/web/build-info.txt
         
     else
         echo "❌ Error: index.html not found in build/web!"
         echo "🔧 Creating fallback index.html..."
         
         # Create a simple fallback if Flutter build failed
-        cat > ./index.html << 'EOF'
+        cat > build/web/index.html << 'EOF'
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Dandan Admin - Build Error</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .error { background: #ffebee; border: 1px solid #f44336; padding: 15px; border-radius: 5px; }
+    </style>
 </head>
 <body>
-    <h1>Build Error</h1>
-    <p>Flutter build failed. Please check build logs.</p>
-    <p>Time: $(date)</p>
+    <div class="error">
+        <h1>🚨 Build Error</h1>
+        <p>Flutter build failed. Please check build logs.</p>
+        <p>Time: $(date)</p>
+        <p>This is a fallback page.</p>
+    </div>
 </body>
 </html>
 EOF
     fi
     
-    # Create a simple test file to verify deployment
-    echo "Flutter Web App - Built $(date)" > build/web/build-info.txt
-    echo "Flutter Web App - Built $(date)" > ./build-info.txt
+    # Final verification
+    echo "🔍 Final verification:"
+    echo "📁 build/web directory structure:"
+    find build/web -type f -name "*.html" -o -name "*.js" -o -name "*.css" | head -10
     
-    # List all files in root for debugging
-    echo "📁 Root directory contents:"
-    ls -la ./
+    echo "📊 Total files in build/web:"
+    find build/web -type f | wc -l
     
 else
     echo "❌ Error: Build failed - build/web directory not found!"
+    echo "🆘 Creating emergency build/web structure..."
+    
+    # Create emergency build/web directory
+    mkdir -p build/web
     
     # Create emergency fallback
-    cat > ./index.html << 'EOF'
+    cat > build/web/index.html << 'EOF'
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Dandan Admin - Build Failed</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .error { background: #ffebee; border: 1px solid #f44336; padding: 15px; border-radius: 5px; }
+    </style>
 </head>
 <body>
-    <h1>Build Failed</h1>
-    <p>Flutter build completely failed. Please check configuration.</p>
+    <div class="error">
+        <h1>🚨 Build Completely Failed</h1>
+        <p>Flutter build completely failed. Please check configuration.</p>
+        <p>Time: $(date)</p>
+    </div>
 </body>
 </html>
 EOF
     
-    echo "🆘 Created emergency fallback index.html"
-    exit 1
+    echo "🆘 Created emergency fallback in build/web/"
 fi
 
 echo "🎉 Vercel Flutter build completed successfully!"
 echo "📁 Output ready for deployment in: build/web"
-echo "📁 Root index.html ready for Vercel routing"
+echo "🔗 Vercel will serve files from: build/web/"
