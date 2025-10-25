@@ -1,7 +1,14 @@
 {
+  "version": 2,
   "buildCommand": "chmod +x vercel-build.sh && ./vercel-build.sh",
   "outputDirectory": "build/web",
   "installCommand": "echo 'Installing Flutter...'",
+  "builds": [
+    { "src": "build/web/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "build/web/index.html" }
+  ],
   "env": {
     "FLUTTER_VERSION": "3.24.0",
     "SUPABASE_URL": "https://jusyngjjjlvmvbrnqik.supabase.co",
