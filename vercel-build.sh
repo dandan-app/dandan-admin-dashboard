@@ -86,9 +86,22 @@ if [ -d "build/web" ]; then
     echo "✅ Build successful! Output directory: build/web"
     echo "📊 Build contents:"
     ls -la build/web/
+    
+    # Verify index.html exists
+    if [ -f "build/web/index.html" ]; then
+        echo "✅ index.html found"
+    else
+        echo "❌ Error: index.html not found in build/web!"
+        exit 1
+    fi
+    
+    # Create a simple test file to verify deployment
+    echo "Flutter Web App - Built $(date)" > build/web/build-info.txt
+    
 else
     echo "❌ Error: Build failed - build/web directory not found!"
     exit 1
 fi
 
 echo "🎉 Vercel Flutter build completed successfully!"
+echo "📁 Output ready for deployment in: build/web"

@@ -1,0 +1,36 @@
+# Flutter build cache
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+!build/web/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# SQL files
+*.sql
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
