@@ -93,16 +93,30 @@ if [ -d "build/web" ]; then
         echo "📄 index.html content preview:"
         head -10 build/web/index.html
         
-        # Verify Flutter assets exist
+        # Copy index.html to root for Vercel rewrites
+        cp build/web/index.html ./index.html
+        echo "✅ Copied index.html to root directory"
+        
+        # Copy all assets to root for proper serving
         if [ -d "build/web/assets" ]; then
             echo "✅ Assets directory found"
-            ls -la build/web/assets/ | head -5
+            cp -r build/web/assets ./assets 2>/dev/null || echo "⚠️ Could not copy assets"
         fi
         
         if [ -d "build/web/canvaskit" ]; then
             echo "✅ Canvaskit directory found"
-            ls -la build/web/canvaskit/ | head -3
+            cp -r build/web/canvaskit ./canvaskit 2>/dev/null || echo "⚠️ Could not copy canvaskit"
         fi
+        
+        if [ -d "build/web/icons" ]; then
+            echo "✅ Icons directory found"
+            cp -r build/web/icons ./icons 2>/dev/null || echo "⚠️ Could not copy icons"
+        fi
+        
+        # Copy all JS and CSS files to root
+        cp build/web/*.js ./ 2>/dev/null || echo "⚠️ No JS files to copy"
+        cp build/web/*.css ./ 2>/dev/null || echo "⚠️ No CSS files to copy"
+        cp build/web/*.wasm ./ 2>/dev/null || echo "⚠️ No WASM files to copy"
         
         # Create build verification file
         echo "Flutter Web App - Built $(date)" > build/web/build-info.txt
@@ -136,10 +150,17 @@ if [ -d "build/web" ]; then
 </body>
 </html>
 EOF
+        
+        # Copy fallback to root
+        cp build/web/index.html ./index.html
+        echo "✅ Copied fallback index.html to root"
     fi
     
     # Final verification
     echo "🔍 Final verification:"
+    echo "📁 Root directory contents:"
+    ls -la ./
+    
     echo "📁 build/web directory structure:"
     find build/web -type f -name "*.html" -o -name "*.js" -o -name "*.css" | head -10
     
@@ -148,7 +169,7 @@ EOF
     
 else
     echo "❌ Error: Build failed - build/web directory not found!"
-    echo "🆘 Creating emergency build/web structure..."
+    echo "🆘 Creating emergency structure..."
     
     # Create emergency build/web directory
     mkdir -p build/web
@@ -175,9 +196,11 @@ else
 </html>
 EOF
     
-    echo "🆘 Created emergency fallback in build/web/"
+    # Copy emergency fallback to root
+    cp build/web/index.html ./index.html
+    echo "🆘 Created emergency fallback in root directory"
 fi
 
 echo "🎉 Vercel Flutter build completed successfully!"
 echo "📁 Output ready for deployment in: build/web"
-echo "🔗 Vercel will serve files from: build/web/"
+echo "📁 Root files ready for Vercel rewrites"
