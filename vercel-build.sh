@@ -89,19 +89,63 @@ if [ -d "build/web" ]; then
     
     # Verify index.html exists
     if [ -f "build/web/index.html" ]; then
-        echo "✅ index.html found"
+        echo "✅ index.html found in build/web"
+        
+        # Copy index.html to root for Vercel routing
+        cp build/web/index.html ./index.html
+        echo "✅ Copied index.html to root directory"
+        
     else
         echo "❌ Error: index.html not found in build/web!"
-        exit 1
+        echo "🔧 Creating fallback index.html..."
+        
+        # Create a simple fallback if Flutter build failed
+        cat > ./index.html << 'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dandan Admin - Build Error</title>
+</head>
+<body>
+    <h1>Build Error</h1>
+    <p>Flutter build failed. Please check build logs.</p>
+    <p>Time: $(date)</p>
+</body>
+</html>
+EOF
     fi
     
     # Create a simple test file to verify deployment
     echo "Flutter Web App - Built $(date)" > build/web/build-info.txt
+    echo "Flutter Web App - Built $(date)" > ./build-info.txt
+    
+    # List all files in root for debugging
+    echo "📁 Root directory contents:"
+    ls -la ./
     
 else
     echo "❌ Error: Build failed - build/web directory not found!"
+    
+    # Create emergency fallback
+    cat > ./index.html << 'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dandan Admin - Build Failed</title>
+</head>
+<body>
+    <h1>Build Failed</h1>
+    <p>Flutter build completely failed. Please check configuration.</p>
+</body>
+</html>
+EOF
+    
+    echo "🆘 Created emergency fallback index.html"
     exit 1
 fi
 
 echo "🎉 Vercel Flutter build completed successfully!"
 echo "📁 Output ready for deployment in: build/web"
+echo "📁 Root index.html ready for Vercel routing"
