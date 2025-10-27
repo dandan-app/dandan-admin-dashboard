@@ -1,17 +1,13 @@
 {
-  "buildCommand": "chmod +x vercel-build.sh && ./vercel-build.sh",
-  "outputDirectory": "build/web",
-  "installCommand": "echo 'Installing Flutter...'",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+  "version": 2,
+  "builds": [
+    { "src": "build/web/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/.*", "dest": "build/web/index.html" }
   ],
   "env": {
-    "FLUTTER_VERSION": "3.24.0",
-    "SUPABASE_URL": "https://jusyngjjjlvmvbrnqik.supabase.co",
+    "SUPABASE_URL": "https://jusynjgjjlvmrvbrnqik.supabase.co",
     "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1c3luamdqamx2bXJ2YnJucWlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAyODYyMjIsImV4cCI6MjA3NTg2MjIyMn0.Bq5fzwIQJ1lfKOieACoPnCBDu1uXL8z6JGrcnB4U0DI"
   }
 }
-
