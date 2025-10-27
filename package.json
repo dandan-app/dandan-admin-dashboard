@@ -1,12 +1,13 @@
 {
   "name": "dandan-admin-dashboard",
   "version": "1.0.0",
-  "description": "Dandan Admin Dashboard - Flutter Web",
+  "description": "Dandan Admin Dashboard - Flutter Web with Supabase",
   "scripts": {
     "build": "chmod +x vercel-build.sh && ./vercel-build.sh",
-    "start": "echo 'Flutter Web app built successfully'"
+    "start": "echo 'Flutter Web app built successfully'",
+    "vercel-build": "chmod +x vercel-build.sh && ./vercel-build.sh"
   },
-  "keywords": ["flutter", "web", "admin", "dashboard"],
+  "keywords": ["flutter", "web", "admin", "dashboard", "supabase"],
   "author": "Dandan Team",
   "license": "MIT"
 }
